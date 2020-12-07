@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/proj4.js"></script>
+        <script src="js/proj4leaflet.js"></script>
+        <script src="data/World_Water_0.js"></script>
+        <script src="data/ldf_covid_compare_1.js"></script>
+        <script src="data/ldf_covid_2.js"></script>
+        <script>
+        var crs = new L.Proj.CRS('EPSG:32618', '+proj=utm +zone=18 +datum=WGS84 +units=m +no_defs', {
+            resolutions: [2800, 1400, 700, 350, 175, 84, 42, 21, 11.2, 5.6, 2.8, 1.4, 0.7, 0.35, 0.14, 0.07],
+        });
+        var map = L.map('map', {
+            crs: crs,
+            continuousWorld: false,
+            worldCopyJump: false, 
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[40.66576881011044,-74.07963808786056],[40.80587540131996,-73.81621425476415]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+            map.setMaxBounds(map.getBounds());
+        }
+        function pop_World_Water_0(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['OBJECTID'] !== null ? autolinker.link(feature.properties['OBJECTID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Name1'] !== null ? autolinker.link(feature.properties['Name1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Name2'] !== null ? autolinker.link(feature.properties['Name2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Name3'] !== null ? autolinker.link(feature.properties['Name3'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['TYPE'] !== null ? autolinker.link(feature.properties['TYPE'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ISO_CC'] !== null ? autolinker.link(feature.properties['ISO_CC'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Shape_Leng'] !== null ? autolinker.link(feature.properties['Shape_Leng'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Shape_Area'] !== null ? autolinker.link(feature.properties['Shape_Area'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_World_Water_0_0() {
+            return {
+                pane: 'pane_World_Water_0',
+                stroke: false, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(233,233,233,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_World_Water_0');
+        map.getPane('pane_World_Water_0').style.zIndex = 400;
+        map.getPane('pane_World_Water_0').style['mix-blend-mode'] = 'normal';
+        var layer_World_Water_0 = new L.geoJson(json_World_Water_0, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_World_Water_0',
+            layerName: 'layer_World_Water_0',
+            pane: 'pane_World_Water_0',
+            onEachFeature: pop_World_Water_0,
+            style: style_World_Water_0_0,
+        });
+        bounds_group.addLayer(layer_World_Water_0);
+        map.addLayer(layer_World_Water_0);
+        function pop_ldf_covid_compare_1(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['field_1'] !== null ? autolinker.link(feature.properties['field_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['t'] !== null ? autolinker.link(feature.properties['t'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['lat'] !== null ? autolinker.link(feature.properties['lat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['lon'] !== null ? autolinker.link(feature.properties['lon'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['date'] !== null ? autolinker.link(feature.properties['date'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['time'] !== null ? autolinker.link(feature.properties['time'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['year'] !== null ? autolinker.link(feature.properties['year'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['month'] !== null ? autolinker.link(feature.properties['month'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['day'] !== null ? autolinker.link(feature.properties['day'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Distance'] !== null ? autolinker.link(feature.properties['Distance'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['next_lat'] !== null ? autolinker.link(feature.properties['next_lat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['next_lon'] !== null ? autolinker.link(feature.properties['next_lon'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_ldf_covid_compare_1_0() {
+            return {
+                pane: 'pane_ldf_covid_compare_1',
+                radius: 0.5,
+                stroke: false,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(103,192,233,1.0)',
+                interactive: false,
+            }
+        }
+        map.createPane('pane_ldf_covid_compare_1');
+        map.getPane('pane_ldf_covid_compare_1').style.zIndex = 401;
+        map.getPane('pane_ldf_covid_compare_1').style['mix-blend-mode'] = 'normal';
+        var layer_ldf_covid_compare_1 = new L.geoJson(json_ldf_covid_compare_1, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_ldf_covid_compare_1',
+            layerName: 'layer_ldf_covid_compare_1',
+            pane: 'pane_ldf_covid_compare_1',
+            onEachFeature: pop_ldf_covid_compare_1,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_ldf_covid_compare_1_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_ldf_covid_compare_1);
+        map.addLayer(layer_ldf_covid_compare_1);
+        function pop_ldf_covid_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['field_1'] !== null ? autolinker.link(feature.properties['field_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['t'] !== null ? autolinker.link(feature.properties['t'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['lat'] !== null ? autolinker.link(feature.properties['lat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['lon'] !== null ? autolinker.link(feature.properties['lon'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['date'] !== null ? autolinker.link(feature.properties['date'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['time'] !== null ? autolinker.link(feature.properties['time'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['year'] !== null ? autolinker.link(feature.properties['year'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['month'] !== null ? autolinker.link(feature.properties['month'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['day'] !== null ? autolinker.link(feature.properties['day'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Distance'] !== null ? autolinker.link(feature.properties['Distance'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['next_lat'] !== null ? autolinker.link(feature.properties['next_lat'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['next_lon'] !== null ? autolinker.link(feature.properties['next_lon'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_ldf_covid_2_0() {
+            return {
+                pane: 'pane_ldf_covid_2',
+                radius: 0.5,
+                stroke: false,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(229,118,0,1.0)',
+                interactive: false,
+            }
+        }
+        map.createPane('pane_ldf_covid_2');
+        map.getPane('pane_ldf_covid_2').style.zIndex = 402;
+        map.getPane('pane_ldf_covid_2').style['mix-blend-mode'] = 'normal';
+        var layer_ldf_covid_2 = new L.geoJson(json_ldf_covid_2, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_ldf_covid_2',
+            layerName: 'layer_ldf_covid_2',
+            pane: 'pane_ldf_covid_2',
+            onEachFeature: pop_ldf_covid_2,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_ldf_covid_2_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_ldf_covid_2);
+        map.addLayer(layer_ldf_covid_2);
+        setBounds();
+        </script>
+    </body>
+</html>
